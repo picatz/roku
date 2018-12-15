@@ -91,6 +91,11 @@ func (e *Endpoint) ActiveApp() (*App, error) {
 	return apps.All[0], nil
 }
 
+// FindRemote is a short-cut to the Keypress to find a roku remote control.
+func (e *Endpoint) FindRemote() error {
+	return e.Keypress(FindRemoteKey)
+}
+
 // Keypress allows simulating hitting a button on the roku remote.
 func (e *Endpoint) Keypress(key string) error {
 	resp, err := http.Post(e.url+pathToKeypress+key, "", nil)
