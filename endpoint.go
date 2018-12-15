@@ -11,6 +11,10 @@ type Endpoint struct {
 	url string
 }
 
+func (e *Endpoint) String() string {
+	return e.url
+}
+
 var (
 	// ErrNoAppFound is the error returned when no applicaiton is found.
 	ErrNoAppFound = errors.New("no app found")
