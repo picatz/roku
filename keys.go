@@ -31,6 +31,8 @@ var (
 	SearchKey = "Search"
 	// EnterKey reprents the "Enter" button.
 	EnterKey = "Enter"
+	// FindRemoteKey reprents the "FindRemote" button.
+	FindRemoteKey = "FindRemote"
 	// VolumeDownKey reprents the "VolumeDown" button.
 	VolumeDownKey = "VolumeDown"
 	// VolumeMuteKey reprents the "VolumeMute" button.
