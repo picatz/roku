@@ -3,7 +3,7 @@ package roku
 import "testing"
 
 func TestActiveApp(t *testing.T) {
-	devices, err := Find(2)
+	devices, err := Find(DefaultWaitTime)
 
 	if err != nil {
 		t.Error(err)
@@ -25,7 +25,7 @@ func TestActiveApp(t *testing.T) {
 }
 
 func TestApps(t *testing.T) {
-	devices, err := Find(2)
+	devices, err := Find(DefaultWaitTime)
 
 	if err != nil {
 		t.Error(err)
@@ -47,7 +47,7 @@ func TestApps(t *testing.T) {
 }
 
 func TestKeypress(t *testing.T) {
-	devices, err := Find(2)
+	devices, err := Find(DefaultWaitTime)
 
 	if err != nil {
 		t.Error(err)
@@ -69,7 +69,7 @@ func TestKeypress(t *testing.T) {
 }
 
 func TestLaunchApp(t *testing.T) {
-	devices, err := Find(2)
+	devices, err := Find(DefaultWaitTime)
 
 	if err != nil {
 		t.Error(err)
@@ -98,7 +98,7 @@ func TestLaunchApp(t *testing.T) {
 }
 
 func TestInstallApp(t *testing.T) {
-	devices, err := Find(2)
+	devices, err := Find(DefaultWaitTime)
 
 	if err != nil {
 		t.Error(err)
@@ -124,7 +124,7 @@ func TestInstallApp(t *testing.T) {
 }
 
 func TestSearch(t *testing.T) {
-	devices, err := Find(2)
+	devices, err := Find(DefaultWaitTime)
 
 	if err != nil {
 		t.Error(err)
@@ -144,7 +144,7 @@ func TestSearch(t *testing.T) {
 }
 
 func TestIcon(t *testing.T) {
-	devices, err := Find(2)
+	devices, err := Find(DefaultWaitTime)
 
 	if err != nil {
 		t.Error(err)
@@ -174,7 +174,7 @@ func TestIcon(t *testing.T) {
 }
 
 func TestInput(t *testing.T) {
-	devices, err := Find(2)
+	devices, err := Find(DefaultWaitTime)
 
 	if err != nil {
 		t.Error(err)
@@ -202,7 +202,7 @@ func TestInput(t *testing.T) {
 }
 
 func TestDeviceInfo(t *testing.T) {
-	devices, err := Find(2)
+	devices, err := Find(DefaultWaitTime)
 
 	if err != nil {
 		t.Error(err)
