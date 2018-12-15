@@ -15,7 +15,11 @@ func main() {
 
     // rick-roll all devices on the network that have YouTube installed
     for _, device := range devices {
-        for _, app := range device.Apps() {
+        apps, err := device.Apps()
+        if err != nil {
+            panic(err)
+        }
+        for _, app := range apps {
             if app.Name == "YouTube" {
                 device.LaunchApp(app.ID, map[string]string{
                     // contentID of "Never Gonna Give You Up" on YouTube
