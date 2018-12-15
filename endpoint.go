@@ -64,7 +64,7 @@ func (e *Endpoint) Apps() (Apps, error) {
 
 // ActiveApp returns the currently active App for an Endpoint.
 func (e *Endpoint) ActiveApp() (*App, error) {
-	apps := Apps{}
+	apps := apps{}
 
 	resp, err := http.Get(e.url + pathToQueryActiveApp)
 	if err != nil {
@@ -84,11 +84,11 @@ func (e *Endpoint) ActiveApp() (*App, error) {
 		return nil, err
 	}
 
-	if len(apps) == 0 {
+	if len(apps.All) == 0 {
 		return nil, ErrNoAppFound
 	}
 
-	return apps[0], nil
+	return apps.All[0], nil
 }
 
 // Keypress allows simulating hitting a button on the roku remote.
