@@ -36,7 +36,7 @@ func main() {
 
 ## Where's the remote(s)?
 
-Keep loosing your roku remote(s)?
+On supported devices, you can make the remote beep.
 
 ```golang
 package main
