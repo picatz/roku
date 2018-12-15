@@ -87,7 +87,7 @@ func TestLaunchApp(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = endpoint.LaunchApp(apps.All[0].ID, nil)
+	err = endpoint.LaunchApp(apps[0].ID, nil)
 
 	// Rick Roll:
 	// err = endpoint.LaunchApp("837", map[string]string{"contentID": "dQw4w9WgXcQ"})
@@ -116,7 +116,7 @@ func TestInstallApp(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = endpoint.InstallApp(apps.All[0].ID, nil)
+	err = endpoint.InstallApp(apps[0].ID, nil)
 
 	if err != nil {
 		t.Error(err)
@@ -162,7 +162,7 @@ func TestIcon(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	bytes, err := endpoint.Icon(apps.All[0].ID)
+	bytes, err := endpoint.Icon(apps[0].ID)
 
 	if err != nil {
 		t.Error(err)
