@@ -4,7 +4,7 @@
 ## Rick Roll the Roku(s)
 
 Rick Roll all roku devices on the network that have YouTube installed.
-> `dQw4w9WgXcQ` is the contentID of "Never Gonna Give You Up" on YouTube
+> [`dQw4w9WgXcQ`](https://www.youtube.com/watch?v=dQw4w9WgXcQ) is the contentID of "Never Gonna Give You Up" on YouTube
 
 ```golang
 package main
