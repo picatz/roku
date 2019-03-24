@@ -1,10 +1,12 @@
 package roku
 
-import "net/http"
-import "net/url"
-import "encoding/xml"
-import "errors"
-import "io/ioutil"
+import (
+	"encoding/xml"
+	"errors"
+	"io/ioutil"
+	"net/http"
+	"net/url"
+)
 
 // Endpoint represents a roku device on the network.
 type Endpoint struct {
@@ -36,6 +38,20 @@ var (
 	pathToSearch             = "/search/browse"
 	pathToInput              = "/input"
 )
+
+// IsInstalledApp checks if the device has a given application ID
+func (e *Endpoint) IsInstalledApp(appID int) (bool, error) {
+	apps, err := e.Apps()
+	if err != nil {
+		return false, err
+	}
+	for _, app := range apps {
+		if app.ID == appID {
+			return true, nil
+		}
+	}
+	return false, nil
+}
 
 // Apps returns the available applications for an Endpoint.
 func (e *Endpoint) Apps() (Apps, error) {
