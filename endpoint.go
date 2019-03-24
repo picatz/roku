@@ -186,8 +186,8 @@ func (e *Endpoint) Icon(id string) ([]byte, error) {
 }
 
 // LaunchApp starts an application on the roku device.
-func (e *Endpoint) LaunchApp(id string, params map[string]string) error {
-	u, err := url.Parse(e.url + pathToLaunch + id)
+func (e *Endpoint) LaunchApp(id int, params map[string]string) error {
+	u, err := url.Parse(e.url + pathToLaunch + string(id))
 	if err != nil {
 		return err
 	}
