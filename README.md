@@ -20,12 +20,14 @@ func main() {
 
     for _, device := range devices {
         apps, err := device.Apps()
+
         if err != nil {
             panic(err)
         }
+
         for _, app := range apps {
-            if app.Name == "YouTube" {
-                device.LaunchApp(app.ID, map[string]string{
+            if app.ID == roku.YouTubeAppID {
+                device.LaunchApp(app.ID, roku.Params{
                     "contentID": "dQw4w9WgXcQ",
                 })
             }
