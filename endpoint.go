@@ -165,8 +165,8 @@ func (e *Endpoint) KeyDown(key string) error {
 }
 
 // Icon returns the image (PNG) for the given applicaton ID.
-func (e *Endpoint) Icon(id string) ([]byte, error) {
-	resp, err := http.Get(e.url + pathToQueryIcon + id)
+func (e *Endpoint) Icon(id int) ([]byte, error) {
+	resp, err := http.Get(e.url + pathToQueryIcon + string(id))
 
 	if err != nil {
 		return nil, err
