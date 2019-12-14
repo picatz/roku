@@ -3,6 +3,7 @@ package roku
 import (
 	"encoding/xml"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -11,6 +12,11 @@ import (
 // Endpoint represents a roku device on the network.
 type Endpoint struct {
 	url string
+}
+
+// InputOptions holds optional values for the "Input" method.
+type InputOptions struct {
+	AppID int
 }
 
 func (e *Endpoint) String() string {
@@ -25,6 +31,8 @@ var (
 	// ErrNoRespBody is the error returned when there was no response body from
 	// the roku device.
 	ErrNoRespBody = errors.New("no response body")
+	// ErrAppNotFound is the error returned when the target app. was not found.
+	ErrAppNotFound = errors.New("Failed to find app")
 
 	pathToQueryActiveApp     = "/query/active-app"
 	pathToQueryAvailableApps = "/query/apps"
@@ -270,8 +278,22 @@ func (e *Endpoint) Search(params map[string]string) error {
 }
 
 // Input provides input functionality for a roku device.
-func (e *Endpoint) Input(params map[string]string) error {
-	u, err := url.Parse(e.url + pathToInput)
+func (e *Endpoint) Input(params map[string]string, options *InputOptions) error {
+	requestURL := e.url + pathToInput
+
+	// Assess optional configuration for "input" call.
+	if options != nil && options.AppID != "" {
+		installed, err := e.IsInstalledApp(options.AppID)
+		if err != nil {
+			return fmt.Errorf("Failed to determine whether app installed: %w", err)
+		} else if !installed {
+			return ErrAppNotFound
+		}
+
+		requestURL += "/" + options.AppID
+	}
+
+	u, err := url.Parse(requestURL)
 	if err != nil {
 		return err
 	}

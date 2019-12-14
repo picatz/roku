@@ -194,7 +194,7 @@ func TestInput(t *testing.T) {
 		"acceleration.x": "0.0",
 		"acceleration.y": "0.0",
 		"acceleration.z": "9.8",
-	})
+	}, nil)
 
 	if err != nil {
 		t.Error(err)
