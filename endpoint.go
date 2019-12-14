@@ -83,6 +83,14 @@ func (e *Endpoint) Apps() (Apps, error) {
 		return nil, err
 	}
 
+	deviceInfo, err := e.DeviceInfo()
+	if err != nil {
+		return nil, fmt.Errorf("Failed to determine whether PlayOnRoku installed: %w", err)
+	}
+	if deviceInfo.HasPlayOnRoku == "true" {
+		apps.All = append(apps.All, &App{Name: "Play On Roku", ID: PlayOnRokuID})
+	}
+
 	if len(apps.All) == 0 {
 		return nil, ErrNoAppsFound
 	}
@@ -275,6 +283,20 @@ func (e *Endpoint) Search(params map[string]string) error {
 	}
 
 	return nil
+}
+
+// PlayVideo wraps Input for the Play On Roku app. to play a custom video.
+func (e *Endpoint) PlayVideo(uri string) error {
+	if _, err := url.Parse(uri); err != nil {
+		return err
+	}
+
+	params := map[string]string{
+		"t": "v", // Indicates a video type.
+		"u": uri,
+	}
+
+	return e.Input(params, &InputOptions{AppID: PlayOnRokuID})
 }
 
 // Input provides input functionality for a roku device.

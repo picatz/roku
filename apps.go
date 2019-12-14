@@ -25,4 +25,6 @@ var (
 	SpotifyAppID = 19977
 	// ESPNAppID is the channel app ID number for ESPN
 	ESPNAppID = 34376
+	// PlayOnRokuID is the channel app ID number for PlayOnRoku
+	PlayOnRokuID = 15985
 )
