@@ -16,7 +16,7 @@ type Endpoint struct {
 
 // InputOptions holds optional values for the "Input" method.
 type InputOptions struct {
-	AppID int
+	AppID string
 }
 
 func (e *Endpoint) String() string {
@@ -48,7 +48,7 @@ var (
 )
 
 // IsInstalledApp checks if the device has a given application ID
-func (e *Endpoint) IsInstalledApp(appID int) (bool, error) {
+func (e *Endpoint) IsInstalledApp(appID string) (bool, error) {
 	apps, err := e.Apps()
 	if err != nil {
 		return false, err
@@ -181,8 +181,8 @@ func (e *Endpoint) KeyDown(key string) error {
 }
 
 // Icon returns the image (PNG) for the given applicaton ID.
-func (e *Endpoint) Icon(id int) ([]byte, error) {
-	resp, err := http.Get(e.url + pathToQueryIcon + string(id))
+func (e *Endpoint) Icon(id string) ([]byte, error) {
+	resp, err := http.Get(e.url + pathToQueryIcon + id)
 
 	if err != nil {
 		return nil, err
@@ -202,8 +202,8 @@ func (e *Endpoint) Icon(id int) ([]byte, error) {
 }
 
 // LaunchApp starts an application on the roku device.
-func (e *Endpoint) LaunchApp(id int, params map[string]string) error {
-	u, err := url.Parse(e.url + pathToLaunch + string(id))
+func (e *Endpoint) LaunchApp(id string, params map[string]string) error {
+	u, err := url.Parse(e.url + pathToLaunch + id)
 	if err != nil {
 		return err
 	}
