@@ -3,6 +3,7 @@ package roku
 import (
 	"encoding/xml"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -11,6 +12,11 @@ import (
 // Endpoint represents a roku device on the network.
 type Endpoint struct {
 	url string
+}
+
+// InputOptions holds optional values for the "Input" method.
+type InputOptions struct {
+	AppID string
 }
 
 func (e *Endpoint) String() string {
@@ -25,6 +31,8 @@ var (
 	// ErrNoRespBody is the error returned when there was no response body from
 	// the roku device.
 	ErrNoRespBody = errors.New("no response body")
+	// ErrAppNotFound is the error returned when the target app. was not found.
+	ErrAppNotFound = errors.New("Failed to find app")
 
 	pathToQueryActiveApp     = "/query/active-app"
 	pathToQueryAvailableApps = "/query/apps"
@@ -40,7 +48,7 @@ var (
 )
 
 // IsInstalledApp checks if the device has a given application ID
-func (e *Endpoint) IsInstalledApp(appID int) (bool, error) {
+func (e *Endpoint) IsInstalledApp(appID string) (bool, error) {
 	apps, err := e.Apps()
 	if err != nil {
 		return false, err
@@ -73,6 +81,14 @@ func (e *Endpoint) Apps() (Apps, error) {
 
 	if err != nil {
 		return nil, err
+	}
+
+	deviceInfo, err := e.DeviceInfo()
+	if err != nil {
+		return nil, fmt.Errorf("Failed to determine whether PlayOnRoku installed: %w", err)
+	}
+	if deviceInfo.HasPlayOnRoku == "true" {
+		apps.All = append(apps.All, &App{Name: "Play On Roku", ID: PlayOnRokuID})
 	}
 
 	if len(apps.All) == 0 {
@@ -165,8 +181,8 @@ func (e *Endpoint) KeyDown(key string) error {
 }
 
 // Icon returns the image (PNG) for the given applicaton ID.
-func (e *Endpoint) Icon(id int) ([]byte, error) {
-	resp, err := http.Get(e.url + pathToQueryIcon + string(id))
+func (e *Endpoint) Icon(id string) ([]byte, error) {
+	resp, err := http.Get(e.url + pathToQueryIcon + id)
 
 	if err != nil {
 		return nil, err
@@ -186,8 +202,8 @@ func (e *Endpoint) Icon(id int) ([]byte, error) {
 }
 
 // LaunchApp starts an application on the roku device.
-func (e *Endpoint) LaunchApp(id int, params map[string]string) error {
-	u, err := url.Parse(e.url + pathToLaunch + string(id))
+func (e *Endpoint) LaunchApp(id string, params map[string]string) error {
+	u, err := url.Parse(e.url + pathToLaunch + id)
 	if err != nil {
 		return err
 	}
@@ -269,9 +285,37 @@ func (e *Endpoint) Search(params map[string]string) error {
 	return nil
 }
 
+// PlayVideo wraps Input for the Play On Roku app. to play a custom video.
+func (e *Endpoint) PlayVideo(uri string) error {
+	if _, err := url.Parse(uri); err != nil {
+		return err
+	}
+
+	params := map[string]string{
+		"t": "v", // Indicates a video type.
+		"u": uri,
+	}
+
+	return e.Input(params, &InputOptions{AppID: PlayOnRokuID})
+}
+
 // Input provides input functionality for a roku device.
-func (e *Endpoint) Input(params map[string]string) error {
-	u, err := url.Parse(e.url + pathToInput)
+func (e *Endpoint) Input(params map[string]string, options *InputOptions) error {
+	requestURL := e.url + pathToInput
+
+	// Assess optional configuration for "input" call.
+	if options != nil && options.AppID != "" {
+		installed, err := e.IsInstalledApp(options.AppID)
+		if err != nil {
+			return fmt.Errorf("Failed to determine whether app installed: %w", err)
+		} else if !installed {
+			return ErrAppNotFound
+		}
+
+		requestURL += "/" + options.AppID
+	}
+
+	u, err := url.Parse(requestURL)
 	if err != nil {
 		return err
 	}

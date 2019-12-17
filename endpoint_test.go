@@ -1,6 +1,9 @@
 package roku
 
-import "testing"
+import (
+	"errors"
+	"testing"
+)
 
 func TestActiveApp(t *testing.T) {
 	devices, err := Find(DefaultWaitTime)
@@ -194,10 +197,65 @@ func TestInput(t *testing.T) {
 		"acceleration.x": "0.0",
 		"acceleration.y": "0.0",
 		"acceleration.z": "9.8",
-	})
+	}, nil)
 
 	if err != nil {
 		t.Error(err)
+	}
+}
+
+func TestPlayVideo(t *testing.T) {
+	devices, err := Find(DefaultWaitTime)
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	if len(devices) == 0 {
+		t.Fatal("no roku devices found")
+	}
+
+	endpoint := devices[0]
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// This does not block on a successful start. Fake URL, so the test should pass,
+	// though the video itself will not load.
+	err = endpoint.PlayVideo("https://fake.url/fake.mp4")
+	if err != nil {
+		t.Fatalf("Failed to play video: %v", err)
+	}
+}
+
+func TestInputBadApp(t *testing.T) {
+	devices, err := Find(DefaultWaitTime)
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	if len(devices) == 0 {
+		t.Fatal("no roku devices found")
+	}
+
+	endpoint := devices[0]
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	badInputOptions := &InputOptions{
+		AppID: "FAKE",
+	}
+
+	err = endpoint.Input(Params{
+		"junk": "data",
+	}, badInputOptions)
+
+	if !errors.Is(err, ErrAppNotFound) {
+		t.Fatalf("Expected app not found error")
 	}
 }
 
