@@ -21,7 +21,7 @@ type InputOptions struct {
 
 // New create a new endpoint struct, url needs to be in the format 'http://ENDPOINT:PORT/'
 // eg http://192.168.0.100:8060/
-func (e *Endpoint) New(url string) *Endpoint {
+func NewEndpoint(url string) *Endpoint {
 	return &Endpoint{url}
 }
 
