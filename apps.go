@@ -1,19 +1,11 @@
 package roku
 
-const TVInput = "tvinput."
-
-type apps struct {
-	All []*App `xml:"app"`
-}
-
-// Apps is a collection of one or more App(s)
-type Apps = []*App
-
 // Found from querying App IDs once installed on a TV
 // https://channelstore.roku.com/details/{AppID} will take you to the channel's page
 // Note that this will redirect you to a URL of the form https://channelstore.roku.com/details/{WebID}/{AppName}
 // where WebID also identifies the app but only via Roku's website (and not on your TV)
-var (
+const (
+	TVInput         = "tvinput."
 	YouTubeAppID    = "837"
 	NetflixAppID    = "12"
 	PrimeVideoAppID = "13"
@@ -38,3 +30,10 @@ var (
 	ABC             = "73376"
 	FoxSports       = "95307"
 )
+
+type apps struct {
+	All []*App `xml:"app"`
+}
+
+// Apps is a collection of one or more App(s)
+type Apps = []*App
