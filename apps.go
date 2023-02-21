@@ -1,30 +1,39 @@
 package roku
 
+// Found from querying App IDs once installed on a TV
+// https://channelstore.roku.com/details/{AppID} will take you to the channel's page
+// Note that this will redirect you to a URL of the form https://channelstore.roku.com/details/{WebID}/{AppName}
+// where WebID also identifies the app but only via Roku's website (and not on your TV)
+const (
+	TVInput         = "tvinput."
+	YouTubeAppID    = "837"
+	NetflixAppID    = "12"
+	PrimeVideoAppID = "13"
+	HuluAppID       = "2285"
+	PandoraAppID    = "28"
+	SpotifyAppID    = "19977"
+	ESPNAppID       = "34376"
+	PlayOnRokuID    = "15985"
+	HDMI1           = TVInput + "hdmi1"
+	HDMI2           = TVInput + "hdmi2"
+	HDMI3           = TVInput + "hdmi3"
+	AV              = TVInput + "cvbs"
+	LiveTV          = TVInput + "dtv"
+	AppleTV         = "551012"
+	Peacock         = "593099"
+	HBOMax          = "61322"
+	CBS             = "619667"
+	DisneyPlus      = "291097"
+	ParamountPlus   = "31440"
+	Spotify         = "22297"
+	CW              = "111255"
+	ABC             = "73376"
+	FoxSports       = "95307"
+)
+
 type apps struct {
 	All []*App `xml:"app"`
 }
 
 // Apps is a collection of one or more App(s)
 type Apps = []*App
-
-// Found using https://channelstore.roku.com/browse
-var (
-	// YouTubeAppID is the channel app ID number for Google's YouTube
-	YouTubeAppID = "837"
-	// NetflixAppID is the channel app ID number for Netflix
-	NetflixAppID = "12"
-	// PrimeVideoAppID is the channel app ID number for Amazon Prime Video
-	PrimeVideoAppID = "13"
-	// FireFoxAppID is the channel app ID number for FireFox
-	FireFoxAppID = "47545"
-	// HuluAppID is the channel app ID number for Hulu
-	HuluAppID = "2285"
-	// PandoraAppID is the channel app ID number for Pandora
-	PandoraAppID = "28"
-	// SpotifyAppID is the channel app ID number for Spotify
-	SpotifyAppID = "19977"
-	// ESPNAppID is the channel app ID number for ESPN
-	ESPNAppID = "34376"
-	// PlayOnRokuID is the channel app ID number for PlayOnRoku
-	PlayOnRokuID = "15985"
-)
